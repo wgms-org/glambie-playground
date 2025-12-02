@@ -1,4 +1,4 @@
-import helpers.example
+import helpers
 
-greeting = helpers.example.hello_world()
+greeting = helpers.hello_world()
 print(greeting)

@@ -6,9 +6,7 @@ Code playground for GlaMBIE-2 pilot studies (https://glambie.org/glambie-2). The
 
 * `data/`: Directory for storing the shared data files (ignored by `git` and omitted from this repository).
 * [`environment.yaml`](environment.yaml): Conda environment specification file.
-* [`helpers/`](helpers): Directory for shared helper modules.
-  * `__init__.py`: Marks the directory as a Python package so that modules can be imported as `import helpers.{module}`.
-  * `example.py`: Example helper module.
+* [`helpers.py`](helpers.py): Shared helper module imported as `import helpers`. Selected functions can be called from the command line (see `python helpers.py`).
 * [`example/`](example): Example project directory. Each project should create their own top-level directory similar to this one.
   * `__init__.py`: Marks the directory as a Python package so that modules therein can be imported as `import example.{module}` (which also limits directory and file names to a–z, A–Z, 0–9, and underscore).
   * `README.md`: Example project readme.
@@ -31,13 +29,29 @@ Update the environment with changes to `environment.yaml`:
 conda env update --file environment.yaml --prune
 ```
 
+To download data from the shared Google Drive, copy [`.env.example`](.env.example) to a new `.env` file (`cp .env.example .env`) and paste in the value immediately after the `=` for each environment variable.
+
+* `GOOGLE_DRIVE_FOLDER_ID`: Identifier of the shared Google Drive folder (the `id` in `https://drive.google.com/drive/folders/{id}?...`).
+* `GOOGLE_DRIVE_API_KEY`: Your Google Drive API key. You can obtain one from [Google Cloud Console > APIs & Services > Credentials](https://console.cloud.google.com/apis/credentials).
+  * Create a project (Select a project > New project) or select an existing one
+  * Create an API key (+ Create credentials > API key) or use an existing one. It is a good idea to restrict the key to the Google Drive API (API restrictions > Restrict key > [x] Google Drive API).
+
+Finally, run the `download_data` helper from the command line:
+
+```bash
+python helpers.py download_data
+# [CREATE] data/dataset-rules.docx
+# [CREATE] data/list-of-datasets.xlsx
+# ...
+```
+
 ## Contribution guidelines
 
 ### Paths
 
 Write your Python files (`*.py`) and Jupyter notebooks (`*.ipynb`) to run from the top-level directory.
 
-For example, `example/script.py` uses the helper module `helpers/example.py` by importing it as `import helpers.example`. This works if you run the script from the top-level directory:
+For example, `example/script.py` uses the helper module `helpers.py` by importing it as `import helpers`. This works if you run the script from the top-level directory:
 
 ```bash
 python -m example.script
